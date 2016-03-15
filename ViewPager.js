@@ -60,7 +60,7 @@ var ViewPager = React.createClass({
 
   getInitialState() {
     return {
-      currentPage: 0,
+      currentPage: this.props.initialPage,
       viewWidth: 0,
       scrollValue: new Animated.Value(0)
     };
