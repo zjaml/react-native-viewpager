@@ -59,15 +59,16 @@ var ViewPager = React.createClass({
   },
 
   getInitialState() {
+    let step = this.props.initialPage > 0? 1: 0
     return {
       currentPage: this.props.initialPage,
       viewWidth: 0,
-      scrollValue: new Animated.Value(0)
+      scrollValue: new Animated.Value(step)
     };
   },
 
   componentWillMount() {
-    this.childIndex = 0;
+    this.childIndex = this.props.initialPage > 0? 1: 0;
 
     var release = (e, gestureState) => {
       var relativeGestureDistance = gestureState.dx / deviceWidth,
@@ -135,6 +136,7 @@ var ViewPager = React.createClass({
 
     if (nextProps.dataSource) {
       var maxPage = nextProps.dataSource.getPageCount() - 1;
+      // console.log(`received new props with maxPage:${maxPage}, currentPage:${this.state.currentPage}`)
       var constrainedPage = Math.max(0, Math.min(this.state.currentPage, maxPage));
       this.setState({
         currentPage: constrainedPage,
@@ -171,6 +173,7 @@ var ViewPager = React.createClass({
   },
 
   movePage(step, gs) {
+    // console.log(`movePage called ${step}`)
     var pageCount = this.props.dataSource.getPageCount();
     var pageNumber = this.state.currentPage + step;
 
@@ -240,6 +243,7 @@ var ViewPager = React.createClass({
   },
 
   render() {
+    // console.log(`viewpager render called currentPage: ${this.state.currentPage}`)
     var dataSource = this.props.dataSource;
     var pageIDs = dataSource.pageIdentities;
 
@@ -248,7 +252,6 @@ var ViewPager = React.createClass({
     var pagesNum = 0;
     var hasLeft = false;
     var viewWidth = this.state.viewWidth;
-
     if(pageIDs.length > 0 && viewWidth > 0) {
       // left page
       if (this.state.currentPage > 0) {
